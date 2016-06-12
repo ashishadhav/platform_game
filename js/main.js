@@ -121,10 +121,14 @@ function create() {
 	platforms = game.add.group();
 	platforms.enableBody = true;
 	var ground = platforms.create(-10, game.world.height - 75, 'ground');
-	ground.scale.setTo(3, 1);
+	var ground2 = platforms.create(300, game.world.height - 75, 'ground');
+	var ground3 = platforms.create(600, game.world.height - 75, 'ground');
+	//ground.scale.setTo(3, 1);
 	
 	//  This stops it from falling away when you jump on it
 	ground.body.immovable = true;
+	ground2.body.immovable = true;
+	ground3.body.immovable = true;
 	
 	//  Now let's create two ledges
 	var ledge = platforms.create(500, 350, 'ground');

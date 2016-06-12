@@ -20,7 +20,12 @@ function preload() {
 	game.load.image('ground','res/ground.png');
 	game.load.image('sun','res/sun.png');
 	game.load.spritesheet('dude', 'res/dude.png', 32, 48);
+	game.load.audio('sfx', 'res/fx_mixdown.ogg');
 }
+
+
+var fx;
+
 
 function create() {
 	game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -80,12 +85,19 @@ function create() {
 
 	winnerText = game.add.text(66, 186, 'USE YOUR CURSOR KEYS TO PLAY', { fontSize: '32px', fill: '#000' });
 
+	fx = game.add.audio('sfx');
+	fx.allowMultiple = true;
+
+	fx.addMarker('ping', 10, 1.0);
+	fx.addMarker('squit', 19, 0.3);
+
 }
 
 function collectStar (player, star) {
 
 	// Removes the star from the screen
 	star.kill();
+	fx.play('ping');
 	//  Add and update the score
 	score += 10;
 	scoreText.text = 'Score: ' + score;
@@ -121,6 +133,7 @@ function update() {
 	if (cursors.up.isDown && player.body.touching.down)
 	{
         	player.body.velocity.y = -350;
+		fx.play('squit');
 		if ( score !=120 ) {
 			winnerText.text = "";
 		}

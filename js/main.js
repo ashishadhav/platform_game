@@ -9,6 +9,65 @@ var scoreText;
 var winnerText;
 
 
+var musicIndex = null,
+    ym, oldValues, values, vu1, vu2, vu3, moveData,
+    vuGroup, musicListGroup, selector, currentPlayingSelector,
+    cursors, time, spacebar;
+
+
+
+var musics = [
+    {
+        name: 'A prehistoric tale 7',
+        author: 'Madmax',
+        file: 'res/A_Prehistoric_Tale_7.ym'
+    },
+
+    {
+        name: 'Copperkaahbaahnaah',
+        author: 'Big Alec',
+        file: 'res/big_alec-copperkaahbaahnaah.ym'
+    },
+
+    {
+        name: 'Thundercats',
+        author: 'David Whittaker',
+        file: 'res/david_whittaker-thundercats.ym'
+    },
+
+    {
+        name: 'Giga Dist',
+        author: 'Count0',
+        file: 'res/count0-giga_dist.ym'
+    },
+
+    {
+        name: 'Comic Bakery',
+        author: 'Madmax',
+        file: 'res/mad_max-comic_bakery.ym'
+    },
+
+    {
+        name: 'Do you speak russian',
+        author: 'Jess',
+        file: 'res/jess-do_you_speak_russian.ym'
+    },
+
+    {
+        name: 'Turrican1 1',
+        author: 'Madmax',
+        file: 'res/mad_max-turrican1-1.ym'
+    },
+
+    {
+        name: 'Wings of death 1',
+        author: 'Madmax',
+        file: 'res/mad_max-wings_of_death1.ym'
+    }
+
+]
+
+
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 function preload() {
@@ -21,6 +80,16 @@ function preload() {
 	game.load.image('sun','res/sun.png');
 	game.load.spritesheet('dude', 'res/dude.png', 32, 48);
 	game.load.audio('sfx', 'res/fx_mixdown.ogg');
+
+	game.load.script('YM', 'js/YM.js');
+
+
+	   // load all songs
+	musics.forEach(function (music) {
+        	game.load.binary(music.name, music.file);
+	});
+
+
 }
 
 
@@ -31,7 +100,22 @@ function create() {
 	game.physics.startSystem(Phaser.Physics.ARCADE);
 	game.add.sprite(0, 0, 'sky');
 	sunImage = game.add.sprite(10,10,'sun');
+	var musicsList;
 
+	var data =  game.cache.getBinary(musics[(Math.floor((Math.random() * 7) + 1)) ].name);
+
+	if (!ym) {
+        	// create our YM instance
+        	ym = new YM(data);
+    	} else {
+        	// stop the song, prepare with new data
+       	 	ym.stop();
+        	ym.clearsong();
+        	ym.parse(data);
+    	}
+
+
+	ym.play();
 	sunImage.scale.setTo(0.1,0.1);
 	players = game.add.group();
 	platforms = game.add.group();

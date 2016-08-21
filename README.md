@@ -1,2 +1,5 @@
-# Phaser-Minimal-Setup
-Minimal setup for Phaser 2D HTML5 games
+# Arcade Game Based on Phaser
+Game hoted on ashishplatformgame.herokuapp.com
+
+Recent Changes:
+added sound tracks !!
